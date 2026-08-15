@@ -48,31 +48,25 @@ argument-hint: "[想法]"      # 可选，UI 输入框占位提示
 
 ### 方式一：DSH 插件命令（推荐）
 
-`dsh plugin` 会把参数转发给指定 profile 目录下的 pnpm，把包装进该 profile：
+`dsh plugin` 会把参数转发给指定 profile 目录下的 pnpm，把装进该 profile 并自动加入
+`dsh.profile.bundles`。本插件以 **DSH bundle** 形式分发（package.json 声明
+`dsh.bundle.patch`），安装后**无需手动注册**，直接启动即可：
 
 ```bash
 # 安装到 web profile
 dsh plugin --profile web add dsh-plugin-commands@latest
-```
 
-装完后还需在 profile 的加载配置里**注册**插件——编辑
-`~/.dsh/profiles/web/cordis.yml`，加上：
-
-```yaml
-- insert:
-    - id: dsh-plugin-commands
-      name: '/Users/<你的用户名>/.dsh/profiles/web/node_modules/dsh-plugin-commands/dist/index.js'
-```
-
-然后启动：
-
-```bash
+# 启动
 dsh web     # 等价于 dsh --profile web
 ```
 
 启动后，在 Web UI 对话框输入 `/` 即可看到插件从命令目录加载出的全部斜杠命令。
 
-> **坑点**：`dsh plugin add` 需写 `~/.dsh`（凭证目录）。在终端沙箱（TRAE/EDR 等）里会报 `EPERM ... pnpm-lock.yaml`。请在**普通 Terminal** 运行；或临时 `HOME=$PWD/.fake-home dsh plugin --profile web add ...`（假宿主目录，需重新登录 DSH）。
+> **坑点**：`dsh plugin add` 需写 `~/.dsh`（凭证目录）。在终端沙箱（TRAE/EDR 等）里会报
+> `EPERM ... pnpm-lock.yaml`。请在**普通 Terminal** 运行；或临时
+> `HOME=$PWD/.fake-home dsh plugin --profile web add ...`（假宿主目录，需重新登录 DSH）。
+> 若升级过插件版本，用 `dsh plugin --profile web up dsh-plugin-commands` 更新到含
+> `dsh.bundle` 的最新版。
 
 ### 方式二：npm 手动安装
 

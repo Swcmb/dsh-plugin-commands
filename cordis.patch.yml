@@ -1,0 +1,6 @@
+# dsh-plugin-commands bundle patch
+# 注册插件入口行。name 用包名，由 cordis 从 profile 的 node_modules 解析到
+# 本包的 main（dist/index.js），无需用户手动改任何 cordis.yml。
+- insert:
+    - id: dsh-plugin-commands
+      name: 'dsh-plugin-commands'

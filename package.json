@@ -1,14 +1,20 @@
 {
   "name": "dsh-plugin-commands",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "DSH 通用斜杠命令加载器插件：扫描项目 .agents/commands/*.md 与 .dsh/commands/*.md，注册为 opencode 风格的 / 斜杠命令",
   "type": "module",
   "main": "dist/index.js",
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "cordis.patch.yml"
   ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
   "scripts": {
     "build": "bun build src/index.ts --outdir dist --target node --external @deepseek-ai/cordis --external @deepseek-ai/dsh-llm --external @deepseek-ai/dsh-commands",
     "typecheck": "tsc --noEmit",
