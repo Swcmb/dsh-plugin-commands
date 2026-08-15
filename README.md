@@ -40,7 +40,62 @@ argument-hint: "[想法]"      # 可选，UI 输入框占位提示
 
 只解析单行 `key: value`；其余字段忽略；无 frontmatter 或未闭合均合法（视为纯正文）。
 
-## 本地加载（DSH developer preview，Node ≥22.19）
+## 安装
+
+本插件通过 npm 发布，可安装到任意 DSH 项目中使用。
+
+```bash
+# npm / pnpm / bun 均可
+npm install dsh-plugin-commands
+# 或
+pnpm add dsh-plugin-commands
+# 或
+bun add dsh-plugin-commands
+```
+
+> Node ≥22.19（DSH developer preview 要求）。
+
+### 在 DSH 中启用
+
+在项目根的 `cordis.yml` 中注册插件，`name` 指向**安装后的构建产物**：
+
+```yaml
+- insert:
+    - id: dsh-plugin-commands
+      name: '<你的项目根>/node_modules/dsh-plugin-commands/dist/index.js'
+```
+
+然后启动：
+
+```bash
+dsh web --patch ./cordis.yml
+```
+
+启动后，在 Web UI 对话框输入 `/` 即可看到插件从命令目录加载出的全部斜杠命令。
+
+### 放置命令文件
+
+插件扫描项目根（最近含 `.git` 的祖先目录）下的两个目录：
+
+| 优先级 | 目录 |
+|---|---|
+| 高 | `<项目根>/.dsh/commands/*.md` |
+| 低 | `<项目根>/.agents/commands/*.md` |
+
+每个 Markdown 文件就是一条命令，例如新建 `.dsh/commands/hello.md`：
+
+```markdown
+---
+description: 打个招呼
+argument-hint: "[名字]"
+---
+
+向用户打个友好的招呼。如果提供了名字，用 $ARGUMENTS 里的名字称呼对方。
+```
+
+重启 DSH 后即可用 `/hello` 触发。
+
+## 本地开发加载（源码方式）
 
 ```bash
 bun install

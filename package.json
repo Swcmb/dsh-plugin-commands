@@ -1,18 +1,33 @@
 {
   "name": "dsh-plugin-commands",
   "version": "0.1.0",
-  "private": true,
+  "description": "DSH 通用斜杠命令加载器插件：扫描项目 .agents/commands/*.md 与 .dsh/commands/*.md，注册为 opencode 风格的 / 斜杠命令",
   "type": "module",
   "main": "dist/index.js",
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "bun build src/index.ts --outdir dist --target node --external @deepseek-ai/cordis --external @deepseek-ai/dsh-llm --external @deepseek-ai/dsh-commands",
     "typecheck": "tsc --noEmit",
-    "test": "bun test"
+    "test": "bun test",
+    "prepublishOnly": "bun run build && bun run typecheck && bun run test"
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh-llm": "0.0.1-rc.1"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "4.0.1"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/cordis": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@deepseek-ai/cordis": "4.0.1",
     "@deepseek-ai/dsh-commands": "0.0.1-rc.1",
-    "@deepseek-ai/dsh-llm": "0.0.1-rc.1",
     "@types/bun": "latest",
     "@types/node": "latest",
     "typescript": "5.8.2"
@@ -20,5 +35,23 @@
   "resolutions": {
     "@deepseek-ai/dsh-session": "0.0.1-rc.5"
   },
+  "engines": {
+    "node": ">=22.19"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuqiangcn/dsh-plugin-commands.git"
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "slash-command",
+    "plugin",
+    "opencode",
+    "openspec"
+  ],
   "license": "MIT"
 }
