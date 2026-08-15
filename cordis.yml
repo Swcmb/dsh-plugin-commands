@@ -1,0 +1,7 @@
+# Cordis 加载配置（本地开发）
+# 启动：dsh web --patch ./cordis.yml
+# 注意：name 必须是构建产物 dist/index.js 的绝对路径（Node ESM 不支持 TS 源码的
+# 无扩展名相对导入，bundle 已打平）；换机器/目录需同步修改
+- insert:
+    - id: dsh-plugin-commands
+      name: '/Users/yuqiang/Documents/study/dsh-plugin-openspec/dist/index.js'

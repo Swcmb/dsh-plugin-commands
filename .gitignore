@@ -1,0 +1,8 @@
+dist/
+node_modules/
+.DS_Store
+.fake-home/
+.ref/
+.superpowers/
+.agents/
+openspec/
