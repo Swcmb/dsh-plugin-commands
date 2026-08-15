@@ -53,4 +53,23 @@ describe("registerCommands", () => {
     expect(registered).toHaveLength(1);
     expect(registered[0].name).toBe("good");
   });
+
+  test("始终提供 input：无 argumentHint 用默认占位，有则用自定义 hint", () => {
+    const registered: Array<{ name: string; input?: { hint: string } }> = [];
+    const ctx = {
+      commands: {
+        register(def: { name: string; input?: { hint: string } }) {
+          registered.push(def);
+        },
+      },
+    } as unknown as Context;
+    const specs: CommandSpec[] = [
+      { name: "plain", description: "无 hint", body: "x" },
+      { name: "custom", description: "有 hint", argumentHint: "[名字]", body: "y" },
+    ];
+    registerCommands(ctx, specs);
+    expect(registered).toHaveLength(2);
+    expect(registered[0].input).toEqual({ hint: "[参数]" });
+    expect(registered[1].input).toEqual({ hint: "[名字]" });
+  });
 });

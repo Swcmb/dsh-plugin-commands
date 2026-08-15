@@ -35,7 +35,10 @@ export function registerCommands(ctx: Context, specs: readonly CommandSpec[]): v
       ctx.commands.register({
         name: spec.name,
         description: spec.description,
-        ...(spec.argumentHint ? { input: { hint: spec.argumentHint } } : {}),
+        // 始终提供 input：DSH 只有命令带 input 字段时，输入 `/name` 后按空格
+        // 才会进入 leadingInput（保留命令名待补参数）。无自定义 hint 时用默认占位，
+        // 让任意命令都能以「/命令名 <参数>」的方式补充文字。
+        input: { hint: spec.argumentHint ?? "[参数]" },
         async handler({ agent, rawInput }) {
           try {
             agent.steer(buildUserMessage(renderPrompt(spec.body, rawInput)));

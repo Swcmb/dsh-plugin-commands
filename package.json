@@ -1,6 +1,6 @@
 {
   "name": "dsh-plugin-commands",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "DSH 通用斜杠命令加载器插件：扫描项目 .agents/commands/*.md 与 .dsh/commands/*.md，注册为 opencode 风格的 / 斜杠命令",
   "type": "module",
   "main": "dist/index.js",
