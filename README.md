@@ -42,7 +42,39 @@ argument-hint: "[想法]"      # 可选，UI 输入框占位提示
 
 ## 安装
 
-本插件通过 npm 发布，可安装到任意 DSH 项目中使用。
+本插件通过 npm 发布，可安装到任意 DSH 项目中。推荐用 DSH 自带的插件命令安装。
+
+> Node ≥22.19（DSH developer preview 要求）。
+
+### 方式一：DSH 插件命令（推荐）
+
+`dsh plugin` 会把参数转发给指定 profile 目录下的 pnpm，把包装进该 profile：
+
+```bash
+# 安装到 web profile
+dsh plugin --profile web add dsh-plugin-commands@latest
+```
+
+装完后还需在 profile 的加载配置里**注册**插件——编辑
+`~/.dsh/profiles/web/cordis.yml`，加上：
+
+```yaml
+- insert:
+    - id: dsh-plugin-commands
+      name: '/Users/<你的用户名>/.dsh/profiles/web/node_modules/dsh-plugin-commands/dist/index.js'
+```
+
+然后启动：
+
+```bash
+dsh web     # 等价于 dsh --profile web
+```
+
+启动后，在 Web UI 对话框输入 `/` 即可看到插件从命令目录加载出的全部斜杠命令。
+
+> **坑点**：`dsh plugin add` 需写 `~/.dsh`（凭证目录）。在终端沙箱（TRAE/EDR 等）里会报 `EPERM ... pnpm-lock.yaml`。请在**普通 Terminal** 运行；或临时 `HOME=$PWD/.fake-home dsh plugin --profile web add ...`（假宿主目录，需重新登录 DSH）。
+
+### 方式二：npm 手动安装
 
 ```bash
 # npm / pnpm / bun 均可
@@ -53,11 +85,7 @@ pnpm add dsh-plugin-commands
 bun add dsh-plugin-commands
 ```
 
-> Node ≥22.19（DSH developer preview 要求）。
-
-### 在 DSH 中启用
-
-在项目根的 `cordis.yml` 中注册插件，`name` 指向**安装后的构建产物**：
+然后在**项目根**的 `cordis.yml` 中注册，`name` 指向**安装后的构建产物**：
 
 ```yaml
 - insert:
@@ -65,13 +93,11 @@ bun add dsh-plugin-commands
       name: '<你的项目根>/node_modules/dsh-plugin-commands/dist/index.js'
 ```
 
-然后启动：
+启动：
 
 ```bash
 dsh web --patch ./cordis.yml
 ```
-
-启动后，在 Web UI 对话框输入 `/` 即可看到插件从命令目录加载出的全部斜杠命令。
 
 ### 放置命令文件
 
