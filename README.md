@@ -93,6 +93,18 @@ bun add dsh-plugin-commands
 dsh web --patch ./cordis.yml
 ```
 
+### 两种方式对比
+
+| | 方式一 `dsh plugin add` | 方式二 `npm install` |
+|---|---|---|
+| 安装范围 | 装进 DSH profile | 装进当前项目 |
+| 是否需手动注册 | ❌ 不需要（bundle 自动注册） | ✅ 需在项目 `cordis.yml` 手写 name |
+| 启动命令 | `dsh web` | `dsh web --patch ./cordis.yml` |
+| 适用 | 个人全局使用、多项目共享 | 锁定在某个项目里 |
+| 换机/换目录 | 无路径问题（包名解析） | 需改 `cordis.yml` 里的绝对路径 |
+
+> 一句话：个人日常用**方式一**（零配置）；项目内固定用**方式二**（显式声明）。
+
 ### 放置命令文件
 
 插件扫描项目根（最近含 `.git` 的祖先目录）下的两个目录：
